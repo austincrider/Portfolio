@@ -8,7 +8,7 @@ I will be using this space to show off things I have written for work and play. 
 
 My name is Austin. I love to learn, and I am always trying to improve my skills.
 
-I have worked in the technology field for over twelve years. I have had the pleasure of working in a variety of IT roles (everything from network administration to identity and automation engineering!), and I have met some great people along the way.
+I have worked in the technology field for over twelve years. I have had the pleasure of working in a variety of IT roles (everything from network administration to identity and automation engineering), and I have met some great people along the way.
 
 ## Goals
 
