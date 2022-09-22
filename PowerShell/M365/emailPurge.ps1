@@ -79,7 +79,13 @@ function Get-ExoModule {
         Write-Host "You have the module installed."
         $updateChoice = Read-Host "Would you like to update the module? (Y/N)"
         if ($updateChoice -eq 'Y' -Or $updateChoice -eq 'y'){
-            Install-Module -Name ExchangeOnlineManagement -Force -AllowClobber
+            Write-Host "Attempting to install the module..."
+            [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+            $installModule = Install-Module -Name ExchangeOnlineManagement -Force -AllowClobber
+            if ($installModule -eq $true){
+                Write-Host "Module installed successfully."
+            }
+            Read-Host "Press Enter to continue"
         }
         else {
             return $false
@@ -88,8 +94,11 @@ function Get-ExoModule {
     else {
         Read-Host "Would you like to install the module? (Y/N)"
         Write-Host "Attempting to install the module..."
+        [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
         $installModule = Install-Module -Name ExchangeOnlineManagement -Force -AllowClobber
-        Write-Host $installModule
+        if ($installModule -eq $true){
+            Write-Host "Module installed successfully."
+        }
         Read-Host "Press Enter to continue"
         
     }
@@ -297,7 +306,7 @@ while ($start -ne $false) {
 
                 If this process does not succeeed, please follow these steps to install the module manually:
 
-                1. Open a PowerShell as administrator
+                1. Open a PowerShell window as administrator
                 2. Run the following command: Install-Module -Name ExchangeOnlineManagement -Force -AllowClobber
                 
 '@
