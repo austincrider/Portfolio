@@ -22,6 +22,8 @@ function Show-EPLogo {
     Write-Host @'
     ============================================
 
+'@ -ForegroundColor red -BackgroundColor black
+    Write-Host @'
       EEEEE    MM  MM    AAAAAAA  IIIIII  LL
       E       M  M M M   AA   AA    II    LL
       EEEEE  MM   M  MM  AAAAAAA    II    LL
@@ -29,6 +31,8 @@ function Show-EPLogo {
       EE     MM      MM  AA   AA    II    LL
       EEEEE  MM      MM  AA   AA  IIIIII  LLLLL
 
+'@ -ForegroundColor cyan -BackgroundColor black
+    Write-Host @'
       PPPPP   UU     UU  RRRRR   GGGGGG  EEEEE
       P    P  UU     UU  R    R  G    G  E
       P    P  UU     UU  R   R   G       EEEEE
@@ -36,22 +40,25 @@ function Show-EPLogo {
       PP      UU     UU  R  R    G    G  EE     
       PP      UUUUUUUUU  R    R  GGGGGG  EEEEE
 
+'@ -ForegroundColor cyan -BackgroundColor black
+    Write-Host @'
     =========================================== v1.0
-'@
+'@ -ForegroundColor red -BackgroundColor black
 }
 function Start-Program {
     Write-Host @'
 
-To search for and delete an email, some information about the message will need to be gathered.
+    Press I to install and/or update the Exchange Online module.
+    (Requires you to run this program as Administrator)
+'@ -ForegroundColor yellow -BackgroundColor black
+    Write-Host @'
 
-        Press I to install and/or update the Exchange Online module.
-                    (Requires you to run this program as Administrator)
-
+To search for and delete emails, some information about the message will need to be gathered.
 
         Press S to start.
         Press Q to quit.
 
-'@
+'@ -ForegroundColor white -BackgroundColor black
 }
 ############################################## FUNCTION - OPEN CONNECTIONS
 # Connect to Security & Compliance Center
@@ -62,6 +69,7 @@ function Open-Connections {
 }
 ############################################## FUNCTION - INSTALL/UPDATE MODULE
 function Check-ExoModule {
+    Write-Host "Checking for existing module..."
     $module = Get-InstalledModule -Name ExchangeOnlineManagement | Format-List Name | Out-String
     $moduleExists = $module.Contains("ExchangeOnlineManagement")
     if ($moduleExists -eq $true){
@@ -307,7 +315,10 @@ while ($start -ne $false) {
                 If this process does not succeeed, please follow these steps to install the module manually:
 
                 1. Open a PowerShell window as administrator
-                2. Run the following command: Install-Module -Name ExchangeOnlineManagement -Force -AllowClobber
+                2. Run the following command:
+                    [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+                2. Run the following command:
+                    Install-Module -Name ExchangeOnlineManagement -Force -AllowClobber
                 
 '@
         Read-Host "Press Enter to continue to the installation process"
