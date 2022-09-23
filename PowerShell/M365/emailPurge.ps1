@@ -127,14 +127,23 @@ function Start-NewSearchCreation {
     $emailSentDate = Read-Host -prompt "Input the date the email was sent (example - MM/DD/YYYY)"
     $emailSentQuery = 'sent:' + $emailSentDate
     $emailSubjectQuery = '"*' + $emailSubject + '*"'
-    Write-Host "Date: " $emailSentQuery
-    Write-Host "Subject: " $emailSubjectQuery
-    # Creates the compliance search using input variables
-    New-ComplianceSearch `
-    -Name PhishSearch1 `
-    -ExchangeLocation All `
-    -Description 'Search and Delete Script' `
-    -ContentMatchQuery "($emailSubjectQuery)($emailSentQuery)"
+    Write-Host "Date: " $emailSentDate
+    Write-Host "Subject: " $emailSubject
+    if ($emailSubject.Length -gt 3){
+        # Creates the compliance search using input variables
+        New-ComplianceSearch `
+        -Name PhishSearch1 `
+        -ExchangeLocation All `
+        -Description 'Search and Delete Script' `
+        -ContentMatchQuery "($emailSubjectQuery)($emailSentQuery)"
+
+        return $true
+    }
+    else {
+        Write-Host "Subject must be greater than 3 characters."
+        Read-Host "Press Enter"
+        return $false
+    }
 }
 ############################################## FUNCTION - BEGIN SEARCH
 function Start-EmailSearch {
@@ -242,8 +251,13 @@ while ($start -ne $false) {
         Open-Connections
         Write-Host "Attempting to remove old searches... "
         Remove-OldSearch
-        Start-NewSearchCreation # Prompts for search variables
-        $searchChoice = Read-Host "Ready to begin search? (Y/N)"
+        $searchVars = Start-NewSearchCreation # Prompts for search variables
+        if ($searchVars -eq $true){
+            $searchChoice = Read-Host "Ready to begin search? (Y/N)"
+        }
+        else {
+            $searchChoice = 'N'
+        }
         if ($searchChoice -eq 'Y' -Or $searchChoice -eq 'y') {
             $searchFunction = Start-EmailSearch
             if ($searchFunction -eq $true) {
