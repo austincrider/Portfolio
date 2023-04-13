@@ -100,15 +100,19 @@ function Get-ExoModule {
         }
     }
     else {
-        Read-Host "Would you like to install the module? (Y/N)"
-        Write-Host "Attempting to install the module..."
-        [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
-        $installModule = Install-Module -Name ExchangeOnlineManagement -Force -AllowClobber
-        if ($installModule -eq $true){
-            Write-Host "Module installed successfully."
+        $installChoice = Read-Host "Would you like to install the module? (Y/N)"
+        if ($installChoice -eq 'Y' -Or $installChoice -eq 'y'){
+            Write-Host "Attempting to install the module..."
+            [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+            $installModule = Install-Module -Name ExchangeOnlineManagement -Force -AllowClobber
+            if ($installModule -eq $true){
+                Write-Host "Module installed successfully."
+            }
+            Read-Host "Press Enter to continue"
         }
-        Read-Host "Press Enter to continue"
-        
+        else {
+            return $false
+        }
     }
 }
 ############################################## FUNCTION - DELETE OLD SEARCH
